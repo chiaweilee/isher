@@ -10,7 +10,8 @@
       "@@/*": [".dumi/tmp/*"],
       "isthe": ["src"],
       "isthe/*": ["src/*", "*"]
-    }
+    },
+    "types": ["jest"]
   },
   "include": [".dumirc.ts", "src/**/*"]
 }
