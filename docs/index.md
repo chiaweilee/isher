@@ -1,12 +1,12 @@
 ---
 hero:
-  title: library
-  description: A JavaScript validator and parser library delivering modularity.
+  title: isthe
+  description: A JavaScript library that supports validation, parsing, and conversion of input data formats.
   actions:
-    - text: Hello
-      link: /
-    - text: World
-      link: /
+    - text: Getting Started
+      link: /overview
+    - text: Documentation
+      link: /library
 features:
   - title: Hello
     emoji: 💎

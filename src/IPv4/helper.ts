@@ -2,7 +2,7 @@ import { IPv4Formatted } from './index.d';
 
 function getPartFormat(part: string): keyof IPv4Formatted {
   if (/^0[xX][\da-fA-F]{2}/.test(part)) return 'hex';
-  if (/^0[0-7]{3}$/.test(part) && parseInt(part, 8) <= 255) return 'octal';
+  if (/^0[0-7]{3}$/.test(part) && parseInt(part, 8) <= 255) return 'dot-octal';
   return 'decimal';
 }
 
@@ -10,7 +10,7 @@ function parsePart(part: string): number {
   switch (getPartFormat(part)) {
     case 'hex':
       return parseInt(part, 16);
-    case 'octal':
+    case 'dot-octal':
       return parseInt(part, 8);
     case 'decimal':
     default:
@@ -38,19 +38,42 @@ export function getIPv4Format(ip: string): keyof IPv4Formatted | 'mixed' {
 }
 
 export function formatIPv4(ip: string, format: keyof IPv4Formatted): string {
-  const parts = ip.split('.');
-  return parts
-    .map((part) => {
-      const int = parsePart(part);
-      switch (format) {
-        case 'hex':
-          return `0x${int.toString(16).padStart(2, '0')}`;
-        case 'octal':
-          return int.toString(8).padStart(4, '0');
-        case 'decimal':
-        default:
-          return int.toString();
-      }
-    })
-    .join('.');
+  if (ip.includes('.')) {
+    if (format === 'integer')
+      return parseInt(formatIPv4(ip, 'binary'), 2).toString(10);
+    if (format === 'octal')
+      return parseInt(formatIPv4(ip, 'binary'), 2).toString(8).padStart(12, '0');
+    const parts = ip.split('.');
+    switch (format) {
+      case 'binary':
+        return parts
+          .map(parsePart)
+          .map((int) => int.toString(2).padStart(8, '0'))
+          .join('');
+      case 'hex':
+        return parts
+          .map(parsePart)
+          .map((int) => '0x'.concat(int.toString(16).padStart(2, '0')))
+          .join('.');
+      case 'hexadecimal':
+        return '0x'.concat(
+          parts
+            .map(parsePart)
+            .map((int) => int.toString(16).padStart(2, '0'))
+            .join(''),
+        );
+      case 'dot-octal':
+        return parts
+          .map(parsePart)
+          .map((int) => int.toString(8).padStart(4, '0'))
+          .join('.');
+      case 'decimal':
+      default:
+        return parts
+          .map(parsePart)
+          .map((int) => int.toString())
+          .join('.');
+    }
+  }
+  return '';
 }

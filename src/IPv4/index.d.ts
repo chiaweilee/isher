@@ -1,15 +1,21 @@
 import { BaseResult } from '../shared';
 
-export type IPv4Formats = {
+export type InvalidIPv4Formats = {
   decimal?: boolean;
   hex?: boolean;
-  octal?: boolean;
-  mixed?: boolean;
+  'dot-octal'?: boolean;
+  'dot-mixed'?: boolean;
+  hexadecimal?: boolean;
 };
 
 export type IPv4Formatted = {
+  binary?: string;
   decimal?: string;
   hex?: string;
+  'dot-octal'?: string;
+  'dot-mixed'?: string;
+  hexadecimal?: string;
+  integer?: string;
   octal?: string;
 };
 
@@ -20,5 +26,5 @@ export interface IPv4Result extends BaseResult {
 
 export interface IPv4Options {
   allowLeadingZero?: boolean;
-  formats?: IPv4Formats;
+  formats?: InvalidIPv4Formats;
 }

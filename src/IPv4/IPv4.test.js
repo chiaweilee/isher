@@ -8,9 +8,13 @@ describe('isIPv4', () => {
       valid: true,
       format: 'decimal',
       formatted: {
+        binary: '11000000000000000000001011101011',
         decimal: '192.0.2.235',
         hex: '0xc0.0x00.0x02.0xeb',
         octal: '0300.0000.0002.0353',
+        hexadecimal: '0xc00002eb',
+        integer: '3221226219',
+        octal: '030000001353',
       },
     });
   });
@@ -22,9 +26,13 @@ describe('isIPv4', () => {
       valid: true,
       format: 'hex',
       formatted: {
+        binary: '11000000000000000000001011101011',
         decimal: '192.0.2.235',
         hex: '0xc0.0x00.0x02.0xeb',
         octal: '0300.0000.0002.0353',
+        hexadecimal: '0xc00002eb',
+        integer: '3221226219',
+        octal: '030000001353',
       },
     });
   });
@@ -38,9 +46,13 @@ describe('isIPv4', () => {
       valid: false,
       format: 'hex',
       formatted: {
+        binary: '11000000000000000000001011101011',
         decimal: '192.0.2.235',
         hex: '0xc0.0x00.0x02.0xeb',
         octal: '0300.0000.0002.0353',
+        hexadecimal: '0xc00002eb',
+        integer: '3221226219',
+        octal: '030000001353',
       },
     });
   });
@@ -50,60 +62,38 @@ describe('isIPv4', () => {
     expect(result).toEqual({
       target: '0300.0000.0002.0353',
       valid: true,
-      format: 'octal',
+      format: 'dot-octal',
       formatted: {
+        binary: '11000000000000000000001011101011',
         decimal: '192.0.2.235',
         hex: '0xc0.0x00.0x02.0xeb',
         octal: '0300.0000.0002.0353',
+        hexadecimal: '0xc00002eb',
+        integer: '3221226219',
+        octal: '030000001353',
       },
     });
   });
 
   it('should return valid octal IP when not allowed', () => {
     const result = isIPv4('0300.0000.0002.0353', {
-      formats: { octal: false },
+      formats: { 'dot-octal': false },
     });
     expect(result).toEqual({
       target: '0300.0000.0002.0353',
       valid: false,
-      format: 'octal',
+      format: 'dot-octal',
       formatted: {
+        binary: '11000000000000000000001011101011',
         decimal: '192.0.2.235',
         hex: '0xc0.0x00.0x02.0xeb',
         octal: '0300.0000.0002.0353',
+        hexadecimal: '0xc00002eb',
+        integer: '3221226219',
+        octal: '030000001353',
       },
     });
   });
-
-  // it('should return invalid IP with leading zeros', () => {
-  //   const result = isIPv4('00192.168.0002.0235', {
-  //     formats: { decimal: true, hex: false, octal: true, mixed: true },
-  //   });
-  //   expect(result).toEqual({
-  //     target: '00192.0168.0002.0235',
-  //     valid: false,
-  //     format: null,
-  //     formatted: {},
-  //   });
-  // });
-
-  // it('should return valid IP with leading zeros when allowed', () => {
-  //   const result = isIPv4('00192.168.0002.0235', {
-  //     formats: { decimal: true, hex: false, octal: true, mixed: true },
-  //     allowLeadingZero: true,
-  //   });
-  //   expect(result).toEqual({
-  //     target: '00192.168.0002.0235',
-  //     valid: true,
-  //     format: null,
-  //     formatted: {},
-  //     formatted: {
-  //       decimal: '192.0.2.235',
-  //       hex: '0xc0.0x00.0x02.0xeb',
-  //       octal: '0300.0000.0002.0353',
-  //     },
-  //   });
-  // });
 
   it('should return invalid IP with wrong number of parts', () => {
     const result = isIPv4('192.168.1');
